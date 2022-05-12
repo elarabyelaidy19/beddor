@@ -4,29 +4,61 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 #
-development:
-  adapter: postgresql
-  encoding: utf8
-  database: project_development
-  pool: 5
-  username: 
-  password:
+default: &default
+  adapter: sqlite3
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
 
-test: &TEST
-  adapter: postgresql
-  encoding: utf8
-  database: project_test
-  pool: 5
-  username: 
-  password:
+development:
+  <<: *default
+  database: db/development.sqlite3
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: db/test.sqlite3
 
 production:
-  adapter: postgresql
-  encoding: utf8
-  database: project_production
-  pool: 5
-  username: 
-  password:
+  <<: *default
+  database: db/production.sqlite3
 
-cucumber:
-  <<: *TEST
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+default: &default
+  adapter: postgresql
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000  
+  host: localhost
+  username: scheduled_tweets 
+  password: password
+
+development: 
+  <<: *default 
+  adapter: postgresql
+  encoding: unicode
+  database: scheduled_tweets_development
+  host: localhost
+  pool: 5
+  username: scheduled_tweets
+  password: password
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default 
+  adapter: postgresql
+  database: scheduled_tweets_test
+  username: scheduled_tweets  
+  password: password
+
+production:
+  <<: *default
+  database: scheduled_tweets_production 
+  username: scheduled_tweets 
+  password: <%= ENV['scheduled_tweets_DATABASE_PASSWORD'] %>
